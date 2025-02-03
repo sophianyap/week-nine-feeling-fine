@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Random Fact Generator</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin-top: 50px;
+        background-color: #e2f891;
+    }
+    #factDisplay {
+        margin: 20px auto;
+        padding: 20px;
+        font-size: 1.5em;
+        color: #333;
+        max-width: 600px;
+        background: rgb(247, 248, 159);
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 1em;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+</style>
+</head>
+<body>
+
+<h1>🧠 Random Fact Generator</h1>
+<div id="factDisplay">
+    <p id="fact">Click the button to get a random fact!</p>
+</div>
+<button id="newFactBtn">Get New Fact</button>
+
+<script>
+const factElement = document.getElementById('fact');
+const button = document.getElementById('newFactBtn');
+
+function fetchFact() {
+    factElement.textContent = 'Loading fact...';
+
+    fetch('https://uselessfacts.jsph.pl/random.json?language=en')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        factElement.textContent = `"${data.text}"`;
+    })
+    .catch(error => {
+        console.error('Error fetching fact:', error);
+        factElement.textContent = 'Failed to load fact. Please try again.';
+    });
+}
+
+// Event listener for button
+button.addEventListener('click', fetchFact);
+fetchFact(); // Load a fact on page load
+</script>
+
+</body>
+</html>
